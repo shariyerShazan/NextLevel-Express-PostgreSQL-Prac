@@ -4,6 +4,10 @@ import cookieParser from "cookie-parser"
 import dotenv from "dotenv"
 dotenv.config()
 import { initDB } from "./utils/db"
+import authRoutes from "./modules/auth/auth.route";
+import userRoutes from "./modules/users/user.route";
+import todoRoutes from "./modules/todos/todo.route";
+
 
 const app = express()
 
@@ -32,6 +36,10 @@ app.get("/" , (req: Request , res: Response)=> {
         })
     }
 })
+
+app.use("/auth", authRoutes);
+app.use("/user", userRoutes);
+app.use("/todo", todoRoutes);
 
 
 
