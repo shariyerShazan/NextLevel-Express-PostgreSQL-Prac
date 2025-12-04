@@ -25,7 +25,7 @@ app.get("/" , (req: Request , res: Response)=> {
             message : "Root Api!!!" ,
             success: true
         })
-    } catch (error) {
+    } catch (error : any) {
         res.status(500).json({
             message : "Internal server error!!!" ,
             success: false
@@ -43,7 +43,7 @@ const runServer = async ()=> {
        app.listen(PORT ,()=> {
         console.log(`Server id runnig at http://localhost:${PORT}`)
     })
-    } catch (error) {
+    } catch (error: any) {
         console.log(error)
     }
 }

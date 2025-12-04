@@ -3,7 +3,7 @@ import dotenv from "dotenv"
 dotenv.config()
 
 // database and connection
-const pool = new Pool({
+export const pool = new Pool({
     connectionString: process.env.DATABASE_URL!,
     ssl: {
         rejectUnauthorized: false, 
@@ -37,7 +37,7 @@ export const initDB = async () => {
         `)
   
       console.log("Database connected & users table ready");
-    } catch (error) {
+    } catch (error : any) {
       console.error("Database initialization failed:", error);
     }
   };
