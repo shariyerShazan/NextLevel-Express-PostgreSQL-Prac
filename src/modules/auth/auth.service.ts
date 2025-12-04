@@ -1,0 +1,37 @@
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import { pool } from "../../utils/db";
+
+export class AuthService {
+  static async register(name: string, email: string, password: string) {
+    const hashed = await bcrypt.hash(password, 10);
+
+    const user = await pool.query(
+      "INSERT INTO users(name,email,password) VALUES($1,$2,$3) RETURNING id, name, email",
+      [name, email, hashed]
+    );
+
+    return user.rows[0];
+  }
+
+  static async login(email: string, password: string) {
+    const userRes = await pool.query(
+      "SELECT * FROM users WHERE email=$1",
+      [email]
+    );
+
+    const user = userRes.rows[0];
+    if (!user) throw "User not found";
+
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) throw "Invalid password";
+
+    const token = jwt.sign(
+      { id: user.id },
+      process.env.JWT_SECRET!,
+      { expiresIn: "7d" }
+    );
+
+    return { token, user: { id: user.id, name: user.name, email: user.email } };
+  }
+}
