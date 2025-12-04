@@ -27,7 +27,7 @@ export class AuthService {
     if (!match) throw "Invalid password";
 
     const token = jwt.sign(
-      { id: user.id, email: user.email },
+      { id: user.id },
       process.env.JWT_SECRET!,
       { expiresIn: "7d" }
     );
